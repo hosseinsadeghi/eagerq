@@ -16,9 +16,6 @@ limitations under the License.
 Email: hosseinsadeghiesfahani@gmail.com
 """
 
-from scipy.linalg import norm
-from copy import deepcopy
-from typing import Iterable
 from eagerq.matrices import *
 import numpy as np
 
@@ -30,8 +27,14 @@ class Register:
     This is a simple tool created as a hobby and it is not meant
     to be very performant at larger qubit counts (24+).
 
-    Example:
-        Create the superposition of two state for a single qubit
+    Args:
+        n (int): The number of qubits
+        initial (np.ndarray): The array of the initial state. When specified, it must have
+        n_dims = n (the number of qubits) with each dimension having the length 2. If the
+        intial state is not specified (initial=None), it will be initialized the state |0>.
+
+    Examples:
+        Create the superposition of two states for a single qubit
 
         >>> qubit = Register(1)
         >>> qubit.h(0)
@@ -99,13 +102,6 @@ class Register:
         self.psi = np.moveaxis(self.psi, 0, i)
         return self
 
-    def __repr__(self):
-        """Print the current vector state using ket notation"""
-        tmp = self.psi.flatten()
-        tmp = [(state, v) for state, v in enumerate(tmp) if v]
-        return ''.join([f'{sign(i, v)}{np.round(v, 4)}|{convert(state, self.n)}\u27E9'
-                        for i, (state, v) in enumerate(tmp)])
-
     def rx(self, i, theta):
         """Add a rotation gate RX(\theta)"""
         _rx = np.array(
@@ -140,6 +136,13 @@ class Register:
         self.psi = np.tensordot(_xx_tensor(phi), self.psi, ((2, 3), (control, target)))
         self.psi = np.moveaxis(self.psi, (0, 1), (control, target))
         return self
+
+    def __repr__(self):
+        """Print the current vector state using ket notation"""
+        tmp = self.psi.flatten()
+        tmp = [(state, v) for state, v in enumerate(tmp) if v]
+        return ''.join([f'{sign(i, v)}{np.round(v, 4)}|{convert(state, self.n)}\u27E9'
+                        for i, (state, v) in enumerate(tmp)])
 
 
 def convert(n, m):
