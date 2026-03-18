@@ -28,3 +28,6 @@ print(reg)  # Print  the register. It will print out the current state.
 The name `eagerq` comes from the term "eager quantum" as in "eager execution". This means that when you apply a gate on a 
 register, the gate takes effect immediately. Unfortunately, this means that further optimization on the application of 
 gates cannot be done. Also, this library is not suitable for parameter tuning required for QAOA, VQE, and other QML algorithms.
+
+## Related Projects
+For a more feature-rich quantum circuit simulator with deferred execution, visualization, and tensor network simulation, see [quantum-circuit-sim](https://github.com/hosseinsadeghi/quantum-circuit-sim) (private).
